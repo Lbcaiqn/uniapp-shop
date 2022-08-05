@@ -1,0 +1,26 @@
+{
+  "name": "uniapp-shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ligengxin549/uniapp-shop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ligengxin549/uniapp-shop/issues"
+  },
+  "homepage": "https://github.com/ligengxin549/uniapp-shop#readme",
+  "dependencies": {
+    "@escook/request-miniprogram": "^0.2.1"
+  },
+  "devDependencies": {
+    "less": "^4.1.3",
+    "less-loader": "^11.0.0"
+  }
+}

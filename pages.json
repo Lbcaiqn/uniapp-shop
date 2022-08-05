@@ -32,6 +32,22 @@
             }
             
         }
+        
+    ],
+    "subpackages": [
+        {
+            "root":"packageA",
+            "pages":[
+                {
+                "path": "GoodsDetail/GoodsDetail",
+                "style": {}
+                },
+                {
+                    "path": "GoodsCart/GoodsCart",
+                    "style": {}
+                }
+            ]
+        }
     ],
     "tabBar": {
         "list": [
