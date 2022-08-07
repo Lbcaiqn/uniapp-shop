@@ -32,7 +32,6 @@
             }
             
         }
-        
     ],
     "subpackages": [
         {
@@ -45,6 +44,11 @@
                 {
                     "path": "GoodsCart/GoodsCart",
                     "style": {}
+                },
+                {
+                    "path" : "Search/Search",
+                    "style" :{}
+            
                 }
             ]
         }

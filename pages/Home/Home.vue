@@ -1,68 +1,74 @@
 <template>
     <view id="Home">
-        <view>
-            <swiper class="swiper" v-if="data?.swiperList" autoplay circular interval="2000">
-                <swiper-item class="swiper-item" v-for="i in data?.swiperList" :key="i.goods_id">
-                    <navigator 
-                    :url="'/packageA/GoodsDetail/GoodsDetail?goods_id=' + i.goods_id"
-                    :open-type="i.open_type"
-                    >
-                        <image :src="i.image_src" mode="widthFix"></image>
-                    </navigator>
-                </swiper-item>
-            </swiper>
-            
-            
-        </view>
-        <view class="navList" v-if="data?.navList">
-            <view 
-            v-for="(i,iIndex) in data?.navList" 
-            :key="iIndex"
-            @click="clickNav(i.name)"
-            >
-            
-                <image :src="i.image_src" mode="widthFix"></image>
-            </view>
-        </view>
-        <view class="floorList" v-if="data?.floorList">
-            <view 
-            class="floorListItem"
-            v-for="(i,iIndex) in data?.floorList"
-            :key="iIndex"
-            >
-                <view class="floorName"><image :src="i?.floor_title?.image_src" mode="widthFix"></image></view>
-                <view class="floorImage">
-                    <view class="floorImageItem">
-                        <navigator :url="i?.product_list[0].url">
-                            <image
-                            :src="i?.product_list[0].image_src" 
-                            mode="widthFix"
-                            >
-                            </image>
+        <my-search @clickSearch="toSearch" />
+        <scroll-view scroll-y style="height: 90vh; width: 100%;">
+            <view>
+                <swiper class="swiper" v-if="data?.swiperList" autoplay circular interval="2000">
+                    <swiper-item class="swiper-item" v-for="i in data?.swiperList" :key="i.goods_id">
+                        <navigator 
+                        :url="'/packageA/GoodsDetail/GoodsDetail?goods_id=' + i.goods_id"
+                        :open-type="i.open_type"
+                        >
+                            <image :src="i.image_src" mode="widthFix"></image>
                         </navigator>
-                    </view>
-                    <view class="floorImageItem right">
-                        <navigator :url="j.url" v-show="jIndex != 0" v-for="(j,jIndex) in i?.product_list" :key="kIndex">
-                          
-                              <image
-                              v-if="jIndex != 0" 
-                              :src="j.image_src" 
-                              mode="aspectFile"
-                              >
-                               </image>
-                          </navigator>
-                        
+                    </swiper-item>
+                </swiper>
+                
+                
+            </view>
+            <view class="navList" v-if="data?.navList">
+                <view 
+                v-for="(i,iIndex) in data?.navList" 
+                :key="iIndex"
+                @click="clickNav(i.name)"
+                >
+                
+                    <image :src="i.image_src" mode="widthFix"></image>
+                </view>
+            </view>
+            <view class="floorList" v-if="data?.floorList">
+                <view 
+                class="floorListItem"
+                v-for="(i,iIndex) in data?.floorList"
+                :key="iIndex"
+                >
+                    <view class="floorName"><image :src="i?.floor_title?.image_src" mode="widthFix"></image></view>
+                    <view class="floorImage">
+                        <view class="floorImageItem">
+                            <navigator :url="i?.product_list[0].url">
+                                <image
+                                :src="i?.product_list[0].image_src" 
+                                mode="widthFix"
+                                >
+                                </image>
+                            </navigator>
+                        </view>
+                        <view class="floorImageItem right">
+                            <navigator :url="j.url" v-show="jIndex != 0" v-for="(j,jIndex) in i?.product_list" :key="kIndex">
+                              
+                                  <image
+                                  v-if="jIndex != 0" 
+                                  :src="j.image_src" 
+                                  mode="aspectFile"
+                                  >
+                                   </image>
+                              </navigator>
+                            
+                        </view>
                     </view>
                 </view>
             </view>
-        </view>
-        
+            
+        </scroll-view>
         
     </view>
 </template>
 
 <script setup>
 import {ref,reactive} from 'vue'
+function toSearch(){
+    uni.navigateTo({url:'/packageA/Search/Search'})
+}
 
 let data = reactive({})
 uni.$http.get('/api/public/v1/home/swiperdata').then(res => {
@@ -81,7 +87,6 @@ uni.$http.get('/api/public/v1/home/catitems').then(res => {
     else    data.navList = res.data.message  
 })
 function clickNav(i){
-    console.log(i)
     if(i == '分类')   uni.switchTab({url: '/pages/Classification/Classification'})
 }
 

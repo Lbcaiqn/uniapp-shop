@@ -1,7 +1,8 @@
 <template>
     <view id="Classification">
+        <my-search @clickSearch.native="toSearch" />
         <view v-if="data?.cateList" class="ScrollArea" style="display: flex;">
-            <scroll-view class="ScrollLeft" scroll-y style="height: 100vh; width: 25%;">
+            <scroll-view class="ScrollLeft" scroll-y style="height: 90vh; width: 25%;">
                 <view 
                 class="ScrollLeftItem" 
                 :class="{'active':isActive == iIndex}" 
@@ -12,7 +13,7 @@
                     {{i.cat_name}}
                 </view>
             </scroll-view>
-            <scroll-view class="ScrollRight" scroll-y :scroll-top="scrollTop" style="height: 100vh; width: 75%;">
+            <scroll-view class="ScrollRight" scroll-y :scroll-top="scrollTop" style="height: 90vh; width: 75%;">
                 <view class="secondCate" v-for="i in data?.cateList[isActive]?.children" :key="i.cat_id">
                     <view class="title">{{i.cat_name}}</view>
                     <view class="thirdCate">
@@ -49,6 +50,9 @@ function toGoodsCart(cid){
     uni.navigateTo({
         url: '/packageA/GoodsCart/GoodsCart?cid' + cid
     })
+}
+function toSearch(){
+    uni.navigateTo({url:'/packageA/Search/Search'})
 }
 </script>
 
