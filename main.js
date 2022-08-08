@@ -19,7 +19,7 @@ export function createApp() {
   }
 }
 // #endif
-//https://applet-base-api-t.itheima.net/docs-uni-shop/3.home.html#_3-1-%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82
+// https://applet-base-api-t.itheima.net/docs-uni-shop/3.home.html#_3-1-%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C%E8%AF%B7%E6%B1%82
 
 //挂载到uni，可以使用拦截器，里面调用微信小程序的api
 import {$http} from '@escook/request-miniprograM'

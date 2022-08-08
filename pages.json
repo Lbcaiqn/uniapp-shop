@@ -43,7 +43,10 @@
                 },
                 {
                     "path": "GoodsCart/GoodsCart",
-                    "style": {}
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "backgroundColor": "#f8f8f8"
+                    }
                 },
                 {
                     "path" : "Search/Search",
