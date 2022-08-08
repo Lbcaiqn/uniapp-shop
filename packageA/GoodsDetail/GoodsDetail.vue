@@ -1,22 +1,161 @@
 <template>
-    <view>
-        123
+    <view id="GoodsDetail">
+        <view class="goods_swiper" v-if="data?.goods?.pics">
+            <swiper autoplay circular interval="3000">
+                <swiper-item v-for="(i,iIndex) in data?.goods?.pics" :key="i.pics_id">
+                    <image :src="i.pics_big" mode="aspectFit" @click="previewImage(iIndex)"></image>
+                </swiper-item>
+            </swiper>
+        </view>
+        
+        <view class="goods-message">
+            <view class="goods-price">￥{{data?.goods?.goods_price ? Number(data?.goods?.goods_price).toFixed(2) : 0}}</view>
+            <view class="goods-title">
+                <view class="goods-title-text">{{data?.goods?.goods_name}}</view>
+                <view class="goods-title-star">
+                    <view v-if="!isStar" @click="star">
+                        <view><uni-icons type="star" size="18" color="gray"></uni-icons></view>
+                        <view>收藏</view>
+                    </view>
+                    <view v-else @click="star">
+                        <view><uni-icons type="star" size="18" color="red"></uni-icons></view>
+                        <view style="color: red;">收藏</view>
+                    </view>
+                </view>
+            </view>
+            <view class="goods-yunfei">快递：免运费</view>
+            <view class="goods-detail">
+                <rich-text :nodes="data?.goods?.goods_introduce"></rich-text>
+            </view>
+        </view>
+        
+        <view class="goods-tab-bar">
+            <uni-goods-nav 
+            :fill="true" 
+            :options="goodsTabBarData.options"
+            :buttonGroup="goodsTabBarData.buttonGroup" 
+            @click="optionsClick" 
+            @buttonClick="buttonClick"
+            ></uni-goods-nav>
+        </view>
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                
-            }
-        },
-        methods: {
+<script setup>
+import {ref,reactive} from 'vue'
+import {onLoad} from '@dcloudio/uni-app'
+import {ShopcartStore} from '../../store/index.js'
+const shopcartStore = ShopcartStore()
+let goods_id = ''
+let data = reactive({})
+onLoad((options) => {
+    goods_id = options.goods_id
+    uni.$http.get('/api/public/v1/goods/detail',{goods_id}).then(res => {
+        if(res.data.meta.status != 200){
+            uni.$showToast()
+            return
+        }
+        else {
+            data.goods = res.data.message
+            data.goods.goods_introduce = data.goods.goods_introduce.replace(/<img /g,'<img style="display:block;" ').replace(/webp/g,'jpg')
             
         }
+    })
+})
+
+function previewImage(i){
+    uni.previewImage({
+        current: i,
+        urls: data.goods.pics.map(x => x.pics_big)
+    })
+}
+
+let isStar = ref(false)
+function star(){
+    isStar.value = !isStar.value
+}
+
+let goodsTabBarData = reactive({
+    options: [
+        {icon: 'shop',text: '店铺'},
+        {icon: 'cart',text: '购物车',info: shopcartStore.getListSum}
+    ],
+    buttonGroip: [
+        {text: '加入购物车',backgroundColor: 'red', color: 'Efff'},
+        {text: '立即购买',backgroundColor: 'ffa200', color: 'Efff'}
+    ]
+})
+function optionsClick(e){
+    if(e.content.text == '购物车'){
+        uni.switchTab({
+            url: '/pages/Shopcart/Shopcart'
+        })
     }
+}
+function buttonClick(e){
+    if(e.content.text == '加入购物车' && data?.goods?.goods_id){
+        if(shopcartStore.list[data.goods.goods_id]){
+            shopcartStore.list[data.goods.goods_id].sum++
+        }
+        else {
+            shopcartStore.list[data.goods.goods_id] = {
+                goods_id: data.goods.goods_id,
+                goods_name: data.goods.goods_name,
+                goods_price: data.goods.goods_price,
+                sum: 1,
+                isSelect: true
+            }
+        }
+        uni.setStorageSync('shopcartData',JSON.stringify(shopcartStore.list))
+        goodsTabBarData.options[1].info = shopcartStore.getListSum
+    }
+}
 </script>
 
-<style>
-
+<style scoped lang="less">
+.goods-swiper {
+    image {
+        // width: 100%;
+    }
+}
+.goods-message {
+    margin: 3vw;
+    margin-bottom: 20vw;
+    .goods-price {
+        color: red;
+        font-size: 7vw;
+        font-weight: bold;
+    }
+    .goods-title {
+        display: flex;
+        margin-top: 3vw;
+        font-size: 4.5vw;
+        .goods-title-text {
+            width: 90%;
+        }
+        .goods-title-star {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            >view>view:last-child {
+                font-size: 3vw;
+            }
+        }
+    }
+    .goods-yunfei {
+        margin-top: 3vw;
+        font-size: 3vw;
+        color: gray;
+    }
+    .goods-detail {
+        margin-top: 15vw;
+    }
+}
+.goods-tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
 </style>

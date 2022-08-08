@@ -9,7 +9,7 @@
             >
                 <view class="goods-image">
                     <image v-if="i?.goods_small_logo" :src="i.goods_small_logo" mode="widthFix"></image>
-                    <image v-else="i?.goods_small_logo" src="https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png" mode="widthFix"></image>
+                    <image v-else src="https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png" mode="widthFix"></image>
                 </view>
                 <view class="goods-message">
                     <view class="goods-message-name">{{i.goods_name}}</view>

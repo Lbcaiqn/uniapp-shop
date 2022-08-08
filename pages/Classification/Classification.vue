@@ -30,6 +30,8 @@
 
 <script setup>
 import {ref,reactive} from 'vue'
+import useBadge from '../../hooks/useBadge.js'
+useBadge()
 
 let data = reactive({}), isActive = ref(0), scrollTop = ref(0)
 uni.$http.get('/api/public/v1/categories').then(res => {

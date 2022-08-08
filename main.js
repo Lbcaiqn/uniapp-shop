@@ -12,8 +12,9 @@ app.$mount()
 
 // #ifdef VUE3
 import { createSSRApp } from 'vue'
+import {pinia} from './store/index.js'
 export function createApp() {
-  const app = createSSRApp(App)
+  const app = createSSRApp(App).use(pinia)
   return {
     app
   }

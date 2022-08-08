@@ -4,17 +4,9 @@
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                
-            }
-        },
-        methods: {
-            
-        }
-    }
+<script setup>
+import useBadge from '../../hooks/useBadge.js'
+useBadge()
 </script>
 
 <style>

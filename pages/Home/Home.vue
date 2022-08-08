@@ -66,6 +66,8 @@
 
 <script setup>
 import {ref,reactive} from 'vue'
+import useBadge from '../../hooks/useBadge.js'
+useBadge()
 function toSearch(){
     uni.navigateTo({url:'/packageA/Search/Search'})
 }
