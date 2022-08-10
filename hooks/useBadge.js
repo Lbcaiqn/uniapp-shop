@@ -5,7 +5,7 @@ export default function useBadge(){
     onShow(() => {
        uni.setTabBarBadge({
            index: 2,
-           text: shopcartStore.getListSum + '' == '0' ? '' : shopcartStore.getListSum + ''
+           text: shopcartStore.isSelectSum() + '' == '0' ? '' : shopcartStore.isSelectSum() + ''
        })
     })
 }

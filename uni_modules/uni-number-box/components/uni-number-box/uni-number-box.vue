@@ -131,11 +131,16 @@
 			},
 			_onBlur(event) {
 				this.$emit('blur', event)
-				let value = event.detail.value;
+				let value = parseInt(event.detail.value);
+                
 				if (!value) {
-					// this.inputValue = 0;
+					this.inputValue = 1;
 					return;
 				}
+                else if(value < 1){
+                    this.inputValue = 1
+                    return
+                }
 				value = +value;
 				if (value > this.max) {
 					value = this.max;

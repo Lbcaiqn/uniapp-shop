@@ -78,7 +78,7 @@ function star(){
 let goodsTabBarData = reactive({
     options: [
         {icon: 'shop',text: '店铺'},
-        {icon: 'cart',text: '购物车',info: shopcartStore.getListSum}
+        {icon: 'cart',text: '购物车',info: shopcartStore.isSelectSum()}
     ],
     buttonGroip: [
         {text: '加入购物车',backgroundColor: 'red', color: 'Efff'},
@@ -102,12 +102,13 @@ function buttonClick(e){
                 goods_id: data.goods.goods_id,
                 goods_name: data.goods.goods_name,
                 goods_price: data.goods.goods_price,
+                goods_small_logo: data.goods.goods_small_logo,
                 sum: 1,
                 isSelect: true
             }
         }
         uni.setStorageSync('shopcartData',JSON.stringify(shopcartStore.list))
-        goodsTabBarData.options[1].info = shopcartStore.getListSum
+        goodsTabBarData.options[1].info = shopcartStore.isSelectSum()
     }
 }
 </script>
