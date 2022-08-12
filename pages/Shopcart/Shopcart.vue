@@ -37,7 +37,7 @@
                 <view class="radio" @click="selectAll"><radio :checked="shopcartStore.isSelectSum() == shopcartStore.getListSum" color="red"></radio></view>
                 <view class="radio-text">全选</view>
                 <view class="price">总计：￥{{shopcartStore.totalPrice().toFixed(2)}}元</view>
-                <view class="to-buy"><view class="to-buy-box">结算</view></view>.
+                <view class="to-buy"><view class="to-buy-box" @click="buy(id)">结算</view></view>.
             </view>
         </view>
         
@@ -54,8 +54,8 @@
 import {ref,reactive} from 'vue'
 import useBadge from '../../hooks/useBadge.js'
 useBadge()
-import {ShopcartStore} from '../../store/index.js'
-const shopcartStore = ShopcartStore()
+import {ShopcartStore,UserStore,AddressStore} from '../../store/index.js'
+const shopcartStore = ShopcartStore(), userStore = UserStore(), addressStore = AddressStore()
 
 const options = [{
     text: '删除',
@@ -113,6 +113,47 @@ function selectAll(){
         index: 2,
         text: shopcartStore.isSelectSum() + '' == '0' ? '' : shopcartStore.isSelectSum() + ''
     })
+}
+function buy(id){
+    let n = 3
+    if(JSON.stringify(addressStore.address) == '{}') uni.$showToast(`请先选择收获地址`,2000)
+    else     if(shopcartStore.isSelectSum() == 0) uni.$showToast('请勾选要结算的商品',2000)
+    else if(userStore.token == ''){
+        uni.showToast({
+            title: `请先登录，${n}秒后自动跳转到登录页`,
+            duration: 1000,
+            icon: 'none',
+            make: true
+        })
+        let timer = setInterval(() => {
+            if(n <= 0){
+                userStore.loginFrom.url = '/pages/Shopcart/Shopcart'
+                userStore.loginFrom.openType = 'switchTab'
+                uni.switchTab({
+                    url: '/pages/Profile/Profile'
+                })
+                clearInterval(timer)
+                return
+            }
+            else {
+                n--
+                uni.showToast({
+                    title: `请先登录，${n}秒后自动跳转到登录页`,
+                    duration: 1000,
+                    icon: 'none',
+                    mask: true,
+                })
+            }
+        },1000)
+    }
+    else {
+       uni.showModal({
+           title: '提示',
+           content: '支付功能尚在开发中',
+           confirmText: '我知道了',
+           showCancel: false
+       })
+    }
 }
 </script>
 

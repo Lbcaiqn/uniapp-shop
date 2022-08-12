@@ -44,8 +44,29 @@ const AddressStore = defineStore('AddressStore',{
   }
 })
 
+const UserStore = defineStore('UserStore',{
+  state(){
+    return {
+        token: uni.getStorageSync('token') == '' ? '' : uni.getStorageSync('token'),
+        userInfo: uni.getStorageSync('userInfoData') == '' ? {} : JSON.parse(uni.getStorageSync('userInfoData')),
+        loginFrom: {
+            url: '',
+            openType: ''
+        }
+    }
+  },
+  getters: {
+      
+  },
+  actions: {
+      
+  }
+})
+
+
 export {
   pinia,
   ShopcartStore,
-  AddressStore
+  AddressStore,
+  UserStore
 }

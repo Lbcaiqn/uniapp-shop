@@ -7,5 +7,6 @@ export default function useBadge(){
            index: 2,
            text: shopcartStore.isSelectSum() + '' == '0' ? '' : shopcartStore.isSelectSum() + ''
        })
+       
     })
 }
