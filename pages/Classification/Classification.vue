@@ -59,12 +59,12 @@ function toSearch(){
 </script>
 
 <style scoped lang="less">
-    .ScrollLeftItem {
-        height: 10vh;
-        line-height: 10vh;
+.ScrollLeftItem {
+        height: 12vw;
+        line-height: 12vw;
         text-align: center;
         font-size: 4vw;
-    }
+}
 .active {
     position: relative;
     color: red;
@@ -81,8 +81,10 @@ function toSearch(){
     }
 }
 .secondCate {
-    margin: 5vw 0;
+    margin: 5vw 3vw;
+    margin-top: 0;
     .title {
+        margin-bottom: 3vw;
         font-size: 5vw;
         height: 10vw;
         line-height: 10vw;

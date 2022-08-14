@@ -1,11 +1,12 @@
 <template>
     <view id="GoodsDetail">
-        <view class="goods_swiper" v-if="data?.goods?.pics">
-            <swiper autoplay circular interval="3000">
-                <swiper-item v-for="(i,iIndex) in data?.goods?.pics" :key="i.pics_id">
-                    <image :src="i.pics_big" mode="aspectFit" @click="previewImage(iIndex)"></image>
+        <view class="goods-swiper">
+            <swiper v-if="data?.goods?.pics?.length != 0" autoplay circular interval="3000" style="height:50vh;width: 100%;">
+                <swiper-item class="image-box" v-for="(i,iIndex) in data?.goods?.pics" :key="i?.pics_id" style="height:50vh;width: 100%;">
+                    <image :src="i?.pics_big" mode="widthFix" @click="previewImage(iIndex)"></image>
                 </swiper-item>
             </swiper>
+            <view v-else class="image-box"><image src="../../static/null.png" mode="widthFix"></image></view>
         </view>
         
         <view class="goods-message">
@@ -14,11 +15,11 @@
                 <view class="goods-title-text">{{data?.goods?.goods_name}}</view>
                 <view class="goods-title-star">
                     <view v-if="!isStar" @click="star">
-                        <view><uni-icons type="star" size="18" color="gray"></uni-icons></view>
+                        <view><uni-icons type="star" size="25" color="gray"></uni-icons></view>
                         <view>收藏</view>
                     </view>
                     <view v-else @click="star">
-                        <view><uni-icons type="star" size="18" color="red"></uni-icons></view>
+                        <view><uni-icons type="star-filled" size="25" color="red"></uni-icons></view>
                         <view style="color: red;">收藏</view>
                     </view>
                 </view>
@@ -44,8 +45,8 @@
 <script setup>
 import {ref,reactive} from 'vue'
 import {onLoad} from '@dcloudio/uni-app'
-import {ShopcartStore} from '../../store/index.js'
-const shopcartStore = ShopcartStore()
+import {ShopcartStore,UserStore} from '../../store/index.js'
+const shopcartStore = ShopcartStore(), userStore = UserStore()
 let goods_id = ''
 let data = reactive({})
 onLoad((options) => {
@@ -58,7 +59,7 @@ onLoad((options) => {
         else {
             data.goods = res.data.message
             data.goods.goods_introduce = data.goods.goods_introduce.replace(/<img /g,'<img style="display:block;" ').replace(/webp/g,'jpg')
-            
+            console.log(data?.goods?.pics)
         }
     })
 })
@@ -110,13 +111,59 @@ function buttonClick(e){
         uni.setStorageSync('shopcartData',JSON.stringify(shopcartStore.list))
         goodsTabBarData.options[1].info = shopcartStore.isSelectSum()
     }
+    else if(e.content.text == '立即购买' && data?.goods?.goods_id){
+        let n = 3
+        if(userStore.token == ''){
+            uni.showToast({
+                title: `请先登录，${n}秒后自动跳转到登录页`,
+                duration: 1000,
+                icon: 'none',
+                make: true
+            })
+            let timer = setInterval(() => {
+                if(n <= 0){
+                    userStore.loginFrom.url = '/packageA/GoodsDetail/GoodsDetail?goods_id='+data?.goods?.goods_id
+                    userStore.loginFrom.openType = 'navigateTo'
+                    uni.switchTab({
+                        url: '/pages/Profile/Profile'
+                    })
+                    clearInterval(timer)
+                    return
+                }
+                else {
+                    n--
+                    uni.showToast({
+                        title: `请先登录，${n}秒后自动跳转到登录页`,
+                        duration: 1000,
+                        icon: 'none',
+                        mask: true,
+                    })
+                }
+            },1000)
+        }
+        else {
+           uni.showModal({
+               title: '提示',
+               content: '支付功能尚在开发中',
+               confirmText: '我知道了',
+               showCancel: false
+           })
+        }
+    }
 }
 </script>
 
 <style scoped lang="less">
 .goods-swiper {
+    height: 50vh;
+    .image-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+    }
     image {
-        // width: 100%;
+        width: 100%;
     }
 }
 .goods-message {
@@ -131,6 +178,7 @@ function buttonClick(e){
         display: flex;
         margin-top: 3vw;
         font-size: 4.5vw;
+        font-weight: bold;
         .goods-title-text {
             width: 90%;
         }

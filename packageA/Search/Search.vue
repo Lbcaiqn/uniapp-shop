@@ -1,7 +1,8 @@
 <template>
     <view>
+        
         <view class="search-box">
-            <uni-search-bar @input="input" :radius="100" cancelButton="none" :focus="true"></uni-search-bar>
+            <uni-search-bar @confirm="confirm" @input="input" :radius="100" cancelButton="none" :focus="true"></uni-search-bar>
         </view>
         
         <view>
@@ -16,16 +17,18 @@
                     </view>
                 </view>
                 
-                <view 
-                v-if="data?.list?.length != 0"
-                class="search-item"
-                v-for="i in data?.list"
-                :key="i?.goods_id"
-                @click="toGoodsDetail(i?.goods_id)"
-                >
-                   <view class="search-item-name">{{i?.goods_name}}</view>
-                    <view class="search-item-icon">
-                        -》
+                <view v-if="data?.list?.length != 0">
+                    <view style="margin: 3vw;font-size: 5vw;">推荐商品</view>
+                    <view
+                    class="search-item"
+                    v-for="i in data?.list"
+                    :key="i?.goods_id"
+                    @click="toGoodsDetail(i?.goods_id)"
+                    >
+                       <view class="search-item-name">{{i?.goods_name}}</view>
+                        <view class="search-item-icon">
+                            <uni-icons type="right" :size="20"></uni-icons>
+                        </view>
                     </view>
                 </view>
             </scroll-view>
@@ -84,8 +87,11 @@ function input(e){
 }
 function toGoodsDetail(id){
     uni.navigateTo({
-        url: '/packageA/GoodsDetail/GoodsDetail?goods_id' + id
+        url: '/packageA/GoodsDetail/GoodsDetail?goods_id=' + id
     })
+}
+function confirm(e){
+    if(e.value != '') toGoodsCart(e.value)
 }
 
 function toGoodsCart(i){

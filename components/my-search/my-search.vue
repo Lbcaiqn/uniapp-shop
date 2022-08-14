@@ -25,6 +25,7 @@ const emits = defineEmits(['clickSearch'])
         width: 90%;
         height: 6vh;
         font-size: 4vw;
+        color: #000;
         background-color: #fff;
         border-radius: 10vw;
         >view:first-child {

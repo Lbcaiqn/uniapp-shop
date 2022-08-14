@@ -86,10 +86,18 @@ function login(){
     })
 }
 function offLogin(){
-    userStore.userInfo = {}
-    userStore.token = ''
-    uni.setStorageSync('userInfoData','')
-    uni.setStorageSync('token','')
+    uni.showModal({
+        title: '提示',
+        content: '确认退出登录吗？',
+        confirmColor: '#ff0000'
+    }).then(res => {
+       if(res.confirm){
+           userStore.userInfo = {}
+           userStore.token = ''
+           uni.setStorageSync('userInfoData','')
+           uni.setStorageSync('token','')
+       }
+    })
 }
 </script>
 
@@ -111,7 +119,7 @@ function offLogin(){
 .message {
     position: relative;
     height: 30vh;
-    background-color: #000;
+    background-color: #bc6138;
     color: #fff;
     font-size: 5vw;
     text-align: center;

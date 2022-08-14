@@ -16,7 +16,10 @@
                 <view class="shopcart-message-item">
                     <view class="shopcart-message-item-radio" @click="radioClick(id)"><radio :checked="i.isSelect" color="red"></radio></view>
                     <view class="shopcart-message-item-content">
-                        <view class="shopcart-message-item-content-image" @click="toGoodsDetail(id)"><image mode="widthFix" :src="i?.goods_small_logo"></image></view>
+                        <view class="shopcart-message-item-content-image" @click="toGoodsDetail(id)">
+                            <image v-if="i?.goods_small_logo" mode="widthFix" :src="i?.goods_small_logo"></image>
+                            <image v-else mode="widthFix" src="../../static/null.png"></image>
+                        </view>
                         <view class="shopcart-message-item-content-text">
                             <view @click="toGoodsDetail(id)">{{i?.goods_name}}</view>
                             <view class="price-and-sum">
@@ -173,7 +176,8 @@ function buy(id){
     margin-bottom: 44px;
     .shopcart-message-item {
         display: flex;
-    
+        margin: 3vw 0;
+        height: 25vw;
         .shopcart-message-item-radio {
             display: flex;
             justify-content: center;
@@ -185,7 +189,10 @@ function buy(id){
             width: 90%;
             .shopcart-message-item-content-image {
                 width: 30.5%;
-                
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 image {
                     width: 100%;
                 }
@@ -197,6 +204,13 @@ function buy(id){
                 width: 69.5%;
                 padding: 0 2vw;
                 font-size: 3.5vw;
+                >view:first-child {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box; 
+                    -webkit-line-clamp: 3; 
+                    -webkit-box-orient: vertical;
+                }
                 .price-and-sum {
                     display: flex;
                     justify-content: space-between;
@@ -214,6 +228,8 @@ function buy(id){
         
     }
 }
+
+
 
 .buy {
     position: fixed;
@@ -259,6 +275,14 @@ function buy(id){
             
         }
     }
+}
+@media (prefers-color-scheme: dark) {
+  .buy {
+    background: #000;
+    .radio-text {
+        color: #fff;
+    }
+  }
 }
 
 .null-shopcart {

@@ -112,6 +112,9 @@ uni.$http.get('/api/public/v1/home/floordata').then(res => {
     width: 100%;
     .swiper-item {
         width: 100%;
+        image {
+            width: 100%;
+        }
     }
 }
 .navList {

@@ -1,5 +1,6 @@
 <template>
-    <view id="GoodsCart">
+    <view id="GoodsCart" @clickSearch="toSearch">
+        <my-search @clickSearch="toSearch" class="search" />
         <view class="goods-cart" v-if="data?.goods?.length != 0">
             <view 
             class="goods-cart-item" 
@@ -9,7 +10,7 @@
             >
                 <view class="goods-image">
                     <image v-if="i?.goods_small_logo" :src="i.goods_small_logo" mode="widthFix"></image>
-                    <image v-else src="https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png" mode="widthFix"></image>
+                    <image v-else src="../../static/null.png" mode="widthFix"></image>
                 </view>
                 <view class="goods-message">
                     <view class="goods-message-name">{{i.goods_name}}</view>
@@ -24,6 +25,11 @@
 <script setup>
 import {ref,reactive} from 'vue'
 import {onLoad,onReachBottom,onPullDownRefresh} from '@dcloudio/uni-app'
+
+function toSearch(){
+    uni.navigateTo({url:'/packageA/Search/Search'})
+}
+
 let queryData = {
     query: '',
     cid: '',
@@ -102,15 +108,24 @@ function toGoodsDetail(id){
 </script>
 
 <style scoped lang="less">
+.search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
 .goods-cart {
     margin: 3vw;
+    margin-top: 12vh;
     .goods-cart-item {
         display: flex;
         margin: 3vw 0;
+        height: 23vw;;
         .goods-image {
             display: flex;
             align-items: center;
             width: 30%;
+            overflow: hidden;
             image {
                 width: 100%;
             }
@@ -121,9 +136,20 @@ function toGoodsDetail(id){
             justify-content: space-between;
             padding: 0 3vw;
             width: 70%;
-            font-size: 3.5vw;
+            font-size: 4vw;
+            >view {
+                overflow: hidden;  
+                text-overflow: ellipsis;
+                display: -webkit-box; 
+                -webkit-line-clamp: 3; 
+                -webkit-box-orient: vertical;
+            }
             .goods-message-price {
+                height: 4.2vw;
+                line-height: 4.2vw;
+                font-weight: bold;
                 color: red;
+                
             }
         }
     }
